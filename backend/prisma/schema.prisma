@@ -5,10 +5,59 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+enum  StatusNum {
+  SENT
+  RESPONDED
+}
+
+model Rfps{
+  id    String   @id @default(uuid())
+  raw_text String  @db.Text
+  structured_requirements Json  @db.JsonB
+  created_at  DateTime  @default(now())
+  sent_rfps  Sent_rfps[]
+  proposals   Proposals[]
+}
+
+model Vendors{
+  id    String  @id @default(uuid())
+  name  String 
+  email String  @unique
+  phone String?
+  company  String?
+  address String?
+  categories  String[]  
+  created_at  DateTime  @default(now())
+  sent_rfps Sent_rfps[]
+  proposals   Proposals[]
+}
+
+model Sent_rfps{
+  id   String  @id @default(uuid())
+  token  String  @unique
+  vendor_id String 
+  rfp_id  String
+  created_at DateTime  @default(now())
+  status  StatusNum    @default(SENT)
+  vendor  Vendors   @relation(fields: [vendor_id],references: [id])
+  rfp  Rfps   @relation(fields: [rfp_id],references: [id])
+}
+
+model Proposals {
+  id  String   @id  @default(uuid())
+  rfp_id  String
+  vendor_id  String
+  structured_proposal  Json  @db.JsonB
+  raw_email String? @db.Text
+  created_at   DateTime  @default(now())
+  vendor  Vendors   @relation(fields: [vendor_id],references: [id])
+  rfp  Rfps   @relation(fields: [rfp_id],references: [id])
 }
