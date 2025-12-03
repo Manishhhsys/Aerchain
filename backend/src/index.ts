@@ -5,6 +5,7 @@ import rfproute from "./routes/rfp.routes"
 import vendorRoute from "./routes/vendorRoutes"
 import { StatusCode } from "./schema/statuscode.enum"
 import { Response ,Request} from "express"
+import { listenmail } from "./services/imapservices/imapidle.servies"
 config()
 const app=express()
 app.use(express.json())
@@ -20,4 +21,8 @@ app.get("/health",(req:Request,res:Response)=>{
 })
 app.listen(process.env._PORT,()=>{
     console.log(`Server is Running on ${process.env._PORT}`)
+})
+
+listenmail().catch((e)=>{
+    console.log("Imap Failed Due to",e)
 })
