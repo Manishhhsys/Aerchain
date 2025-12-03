@@ -18,14 +18,15 @@ export const createRfp=async(req:Request,res:Response)=>{
                 message:"Something Went Wrong"
             })
         }
-        await prisma.rfps.createMany({
+        const response=await prisma.rfps.create({
             data:{
                 raw_text:raw_text,
                 structured_requirements:structured_text
             }
         })
         return res.status(StatusCode.CREATED).json({
-            message:"New RFP Proposal is Created Successfully"
+            message:"New RFP Proposal is Created Successfully",
+            data:response.id
         })
     }catch(e:any){
         console.log("Internal Erorr while Filtering the RFP",e)

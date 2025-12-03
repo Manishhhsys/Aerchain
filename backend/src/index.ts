@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors"
 import { config } from "dotenv"
 import rfproute from "./routes/rfp.routes"
+import vendorRoute from "./routes/vendorRoutes"
 import { StatusCode } from "./schema/statuscode.enum"
 import { Response ,Request} from "express"
 config()
@@ -10,6 +11,7 @@ app.use(express.json())
 app.use(cors())
 
 app.use("/api/rfp",rfproute)
+app.use("/api/vendor",vendorRoute)
 app.get("/health",(req:Request,res:Response)=>{
     return res.status(StatusCode.OK).json({
         message:"Server is Running",
