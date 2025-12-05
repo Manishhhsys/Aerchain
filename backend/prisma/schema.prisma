@@ -55,6 +55,7 @@ model Proposals {
   id  String   @id  @default(uuid())
   rfp_id  String
   vendor_id  String
+  tracking_id  String?
   structured_proposal  Json  @db.JsonB
   raw_email String? @db.Text
   created_at   DateTime  @default(now())
