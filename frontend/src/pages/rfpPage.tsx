@@ -4,12 +4,15 @@ import { Button } from "../components/ui/button";
 import { useGetVendor } from "../hooks/useGetVendor";
 import { data, useParams } from "react-router-dom";
 import axios from "axios";
+import VendorRespondedList from "../components/vendorRespondedList";
+import { useGetVendorResponded } from "../hooks/useGetVendorResponded";
 
 
 function RfpPage() {
     const [selectedVendorIds, setSelectedVendorIds] = useState<string[]>([]);
     const vendors=useGetVendor()
     const {rfp_id}=useParams()
+    const respondedVendors=useGetVendorResponded(rfp_id as string)
     const handleSubmit = async () => {
         const response=await axios.post(`${import.meta.env.VITE_API_BACKEND_URL}/rfp/${rfp_id}/send`,{
             vendors_ids:selectedVendorIds
@@ -40,8 +43,15 @@ function RfpPage() {
                     onSelectionChange={setSelectedVendorIds}
                 />
             </div>
-
-
+            <div className="mt-5 flex items-center justify-between">
+                <div className="text-xl font-semibold">
+                Vendor Responded
+                </div>
+                <div>
+                    <Button>Recommended Vendor(Ai)</Button>
+                </div>
+            </div>
+            <VendorRespondedList responded={respondedVendors} />
         </div>
     );
 }
