@@ -1,3 +1,4 @@
+import { StatusNum } from "@prisma/client";
 import { isvendoremail } from "../../lib/isvendoremail";
 import { getPdfData } from "../../utils/getPdfDate";
 import prisma from "../../utils/prisma.client";
@@ -23,7 +24,7 @@ export const listenmail = async () => {
 
             }
             const parasedmail = await simpleParser(latestmail.source)
-            console.log("The NEw MAil SUbject is", parasedmail.subject)
+            console.log("The NEw MAil SUbject is", parasedmail.subject) ///Neeed to remove this once the project is done 
             console.log("The NEW MAil Body is", parasedmail.text)
             console.log("THe New Attachment", parasedmail.attachments)
             const findvendoremail=await isvendoremail(parasedmail.from?.value[0]?.address!)
@@ -51,6 +52,13 @@ export const listenmail = async () => {
                     raw_email: parasedmail.text,
                     structured_proposal: llmresponse.proposal,
                     vendor_id: findvendoremail.id
+                }
+            })
+            await prisma.sent_rfps.update({
+                where:{
+                    token:llmresponse.tracking_id
+                },data:{
+                    status:StatusNum.RESPONDED
                 }
             })
         } finally {

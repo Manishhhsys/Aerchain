@@ -3,7 +3,7 @@ import { ChatPromptTemplate } from "@langchain/core/prompts";
 export const aiMailTemplate = ChatPromptTemplate.fromMessages([
   [
     "system",
-    `You are an AI assistant that generates a complete procurement email.
+    `You are an AI assistant that generates a complete procurement invitation email to vendors.
 
 Your inputs:
 - structured RFP JSON
@@ -11,12 +11,29 @@ Your inputs:
 - tracking ID
 - RFP ID
 
-Rules:
+Your job:
+- Create a professional email inviting the vendor to submit a proposal.
 - Use EXACT item names from rfp_json.items.
-- NO placeholders in the output.
-- Write a clean subject, body_text, and body_html.
-- Output must be valid JSON with three fields: subject, body_text, and body_html.
-- All fields must be strings.
+- DO NOT use placeholders in the output.
+- Write the final email as JSON:
+  {{
+    "subject": string,
+    "body_text": string,
+    "body_html": string
+  }}
+
+VERY IMPORTANT INSTRUCTIONS:
+1. Inform the vendor clearly that they MUST include BOTH the Tracking ID and RFP ID in their reply email.
+2. If the vendor does NOT include both IDs in their reply, their proposal will NOT be counted or processed.
+3. At the END of the email body (both text and HTML versions), include a section that displays:
+      Tracking ID: {{tracking_id}}
+      RFP ID: {{rfp_id}}
+4. The tracking_id and rfp_id must be easy for the vendor to copy and must be clearly visible.
+5. Do NOT add placeholders. Use the literal tracking_id and rfp_id passed to the model.
+
+Tone:
+- Formal, clear, and professional.
+- Well-structured paragraphs.
 `
   ],
   [
@@ -31,6 +48,6 @@ Vendor JSON:
 Tracking ID: {tracking_id}
 RFP ID: {rfp_id}
 
-Generate the final email now as JSON with subject, body_text, and body_html fields.`
+Generate the final JSON output now with "subject", "body_text", and "body_html".`
   ]
 ]);
