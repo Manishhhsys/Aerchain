@@ -1,11 +1,14 @@
 import { Card, CardContent, CardHeader } from "./ui/card"
 interface rfcardProps{
-    raw_text:string
+    raw_text:string,
+    id:string,
+    onClick:()=>void
+    
 }
 
-function Rfpcard({ raw_text }: rfcardProps) {
+function Rfpcard({ raw_text,id,onClick}: rfcardProps) {
   return (
-    <Card className="h-[180px] flex flex-col justify-between overflow-hidden">
+    <Card className="h-[180px] flex flex-col justify-between overflow-hidden" id={id} onClick={onClick} >
       <CardHeader className="font-semibold">
         Name
       </CardHeader>
