@@ -3,6 +3,7 @@ import { createRfp } from "../controller/create.controller";
 import { sendrfpmail } from "../controller/sendrpfmail.controller";
 import { comparevendor } from "../controller/comparevendor.controller";
 import { getrfplist } from "../controller/getrfplist.controller";
+import { getproposalrecv } from "../controller/getproposalrecv.controller";
 
 const router:Router=Router();
 
@@ -11,5 +12,6 @@ router.post("/create-rfp",createRfp);
 router.post("/:rfp_id/send",sendrfpmail)
 router.get("/:rfp_id/compare",comparevendor)
 router.get("/getrfp",getrfplist)
+router.get("/:rfp_id/received",getproposalrecv)
 
 export default router
