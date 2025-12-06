@@ -12,7 +12,7 @@ async function main() {
   const vendors = [
     {
       name: "Manish IT Solutions",
-      email: "manishku073@gamil.com",
+      email: "manishku073@gmail.com",
       phone: "9999999999",
       company: "Manish IT Solutions Pvt Ltd",
       address: "Bengaluru, Karnataka, India",
