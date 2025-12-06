@@ -1,4 +1,4 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import VendorList from "../components/vendorlist";
 import { Button } from "../components/ui/button";
 import { useGetVendor } from "../hooks/useGetVendor";

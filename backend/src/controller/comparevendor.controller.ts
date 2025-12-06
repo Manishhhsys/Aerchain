@@ -53,7 +53,7 @@ export const comparevendor = async (req: Request, res: Response) => {
                 message: "RFP structured data is missing"
             });
         }
-        const llmresponse = await getcompare(rfp_json.structured_requirements, finaldata)
+        const llmresponse = await getcompare(rfp_json.structured_requirements, cleanVendorProposals)
         if(!llmresponse){
             return res.status(StatusCode.BAD_REQUEST).json({
                 message:"Error In LLm while producing the Comparsion"
