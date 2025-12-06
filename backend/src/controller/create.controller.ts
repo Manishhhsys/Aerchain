@@ -8,7 +8,7 @@ export const createRfp=async(req:Request,res:Response)=>{
         const paraseddata=rfpTextSchema.safeParse(req.body)
         if(!paraseddata.success){
             return res.status(StatusCode.BAD_REQUEST).json({
-                message:paraseddata.error.flatten()
+                message:paraseddata.error.message
             })
         }
         const raw_text=paraseddata.data.raw_text

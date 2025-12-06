@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Rfps" ADD COLUMN     "name" TEXT NOT NULL DEFAULT 'TEST';

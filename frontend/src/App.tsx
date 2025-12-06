@@ -1,6 +1,6 @@
 import { Routes,Route} from 'react-router-dom'
 import './App.css'
-import Dashboard from './components/dashboard'
+import Dashboard from './pages/dashboard'
 import Navbar from './components/navbar'
 import RfpPage from './pages/rfpPage'
 

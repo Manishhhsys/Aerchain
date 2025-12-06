@@ -1,41 +1,58 @@
 import { LucidePlus } from "lucide-react"
-import { Button } from "./ui/button"
-import Rfpcard from "./rfpcard"
+import { Button } from "../components/ui/button"
+import Rfpcard from "../components/rfpcard"
 import { useGetRfp } from "../hooks/useGetRfp"
-import { Dialog, DialogFooter, DialogHeader, DialogTrigger } from "./ui/dialog";
+import { Dialog, DialogFooter, DialogHeader, DialogTrigger } from "../components/ui/dialog";
 import { useForm } from "react-hook-form";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
-import { DialogClose, DialogContent, DialogTitle } from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "../components/ui/form";
+import { DialogClose, DialogContent, DialogTitle } from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 
 interface RfpData {
   id: string;
   raw_text: string;
+  name:string;
 }
 
 async function createrfp(data:any){
     try{
         const response=await axios.post(`${import.meta.env.VITE_API_BACKEND_URL}/rfp/create-rfp/`,data)
         if(response.status===201){
-            console.log("Succes")//toast
+            toast(response.data.message)
             return response
         }
+        
     }
     catch(e:any){
-        console.log("Error in create Rfp",e)
+       const errorObj = e?.response?.data?.message;
+
+    let errorMessage = "Something went wrong";
+    if (errorObj?.fieldErrors) {
+      const firstKey = Object.keys(errorObj.fieldErrors)[0];
+      if (firstKey && errorObj.fieldErrors[firstKey]?.[0]) {
+        errorMessage = errorObj.fieldErrors[firstKey][0];
+      }
+    }
+    else if (typeof errorObj === "string") {
+      errorMessage = errorObj;
+    }
+    toast.error(errorMessage);
+
+    console.error("Error in create RFP:", e);
     }
 }
 
 function Dashboard() {
-  const data = useGetRfp() as RfpData[]
+  const [open,setopen]=useState(false)
+  const data = useGetRfp(open) as RfpData[]
   const form=useForm()
   const navigate = useNavigate();
-  const [open,setopen]=useState(false)
   const handleCardClick = (id: string) => {
     navigate(`/rfp/${id}`);
   };
@@ -98,7 +115,7 @@ function Dashboard() {
                     <div>No Requests for Proposal Is Created</div>
                 ):
                 (data.map((content)=>(
-                    <Rfpcard key={content.id} raw_text={content.raw_text} id={content.id} onClick={() => handleCardClick(content.id)}></Rfpcard>
+                    <Rfpcard key={content.id} raw_text={content.raw_text} id={content.id} name={content.name} onClick={() => handleCardClick(content.id)}></Rfpcard>
                 )))
                 }
             </div>

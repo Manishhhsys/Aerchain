@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 
-export const useGetRfp = () => {
+export const useGetRfp = (open:boolean) => {
     const [data, setdata] = useState([]);
     useEffect(() => {
         const getdata = async () => {
@@ -16,6 +16,6 @@ export const useGetRfp = () => {
             }
         }
         getdata();
-    }, [])
+    }, [open])
     return data
 }

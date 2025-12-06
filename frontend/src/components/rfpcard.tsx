@@ -2,15 +2,16 @@ import { Card, CardContent, CardHeader } from "./ui/card"
 interface rfcardProps{
     raw_text:string,
     id:string,
-    onClick:()=>void
+    onClick:()=>void,
+    name:string
     
 }
 
-function Rfpcard({ raw_text,id,onClick}: rfcardProps) {
+function Rfpcard({ raw_text,id,onClick,name}: rfcardProps) {
   return (
     <Card className="h-[180px] flex flex-col justify-between overflow-hidden" id={id} onClick={onClick} >
       <CardHeader className="font-semibold">
-        Name
+        {name}
       </CardHeader>
 
       <CardContent className="overflow-hidden">

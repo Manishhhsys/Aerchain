@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import VendorList from "../components/vendorlist";
 import { Button } from "../components/ui/button";
 import { useGetVendor } from "../hooks/useGetVendor";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import VendorRespondedList from "../components/vendorRespondedList";
+import VendorRespondedList from "../components/vendorrespondedlist";
 import { useGetVendorResponded } from "../hooks/useGetVendorResponded";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog";
+import { toast } from "sonner";
 
 interface AIVendor {
     vendor_id: string;
@@ -33,23 +34,39 @@ interface AIResponse {
 
 function RfpPage() {
     const [selectedVendorIds, setSelectedVendorIds] = useState<string[]>([]);
+    const [isdisable,setdisable]=useState<Boolean>(false)
     const [aiData, setaiData] = useState<AIResponse | null>(null)
     const vendors = useGetVendor()
     const { rfp_id } = useParams()
     const respondedVendors = useGetVendorResponded(rfp_id as string)
     const handleSubmit = async () => {
-        const response = await axios.post(`${import.meta.env.VITE_API_BACKEND_URL}/rfp/${rfp_id}/send`, {
+        if(selectedVendorIds.length===0){
+            toast.error("Please Select the Vendor From The List")
+            return
+        }
+        try{
+            setdisable(true)
+            const response = await axios.post(`${import.meta.env.VITE_API_BACKEND_URL}/rfp/${rfp_id}/send`, {
             vendors_ids: selectedVendorIds
         })
         if (response.status === 200) {
-            console.log("email was Sent")//toast
+            toast.success(response.data.message)
+        }
+        }catch(e:any){
+            toast.error(e.response.data.message)
+        }finally{
+            setdisable(false);
         }
     };
     const getcompareinfo = async () => {
-        const response = await axios.get(`${import.meta.env.VITE_API_BACKEND_URL}/rfp/${rfp_id}/compare`)
+        try{
+            const response = await axios.get(`${import.meta.env.VITE_API_BACKEND_URL}/rfp/${rfp_id}/compare`)
         if (response.status === 200) {
             setaiData(response.data.data)
         }
+        }catch(e:any){
+            toast.error(e.response.data.message)
+        }   
     }
     return (
         <div className="bg-background min-h-screen flex flex-col justify-start px-5 py-5">
@@ -57,7 +74,7 @@ function RfpPage() {
                 <div className="flex items-center justify-between">
                     <div className="text-xl font-semibold">Vendor List</div>
                     <div>
-                        <Button className="mt-4 w-fit" onClick={handleSubmit}>
+                        <Button className="mt-4 w-fit" onClick={handleSubmit} disabled={isdisable as boolean}>
                             Send RFP to Selected Vendors
                         </Button>
                     </div>

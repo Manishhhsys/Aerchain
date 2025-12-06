@@ -7,7 +7,8 @@ export const getrfplist=async(req:Request,res:Response)=>{
         const response=await prisma.rfps.findMany({
             select:{
                 id:true,
-                raw_text:true
+                raw_text:true,
+                name:true
             }
         })
         if(response.length==0){
