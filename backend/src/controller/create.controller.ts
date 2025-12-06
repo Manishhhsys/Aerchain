@@ -20,6 +20,7 @@ export const createRfp=async(req:Request,res:Response)=>{
         }
         const response=await prisma.rfps.create({
             data:{
+                name:paraseddata.data.name,
                 raw_text:raw_text,
                 structured_requirements:structured_text
             }

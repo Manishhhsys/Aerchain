@@ -20,6 +20,7 @@ enum  StatusNum {
 
 model Rfps{
   id    String   @id @default(uuid())
+  name  String
   raw_text String  @db.Text
   structured_requirements Json  @db.JsonB
   created_at  DateTime  @default(now())
