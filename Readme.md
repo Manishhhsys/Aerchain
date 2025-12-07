@@ -30,7 +30,7 @@ npm install
 
 # 1.c Copy .env.example to .env
 ```bash
-.env.example > .env
+cat .env.example > .env
 ```
 
 # 1.d Replace the Environment Variables with the Your Value
@@ -59,7 +59,7 @@ npm run dev
 
 # 2.a Copy .env.example to .env
 ```bash
-.env.example > .env
+cat .env.example > .env
 ```
 
 # 2.b Replace the Environment Variables with the Your Value
